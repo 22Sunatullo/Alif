@@ -1,17 +1,25 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { Pagination } from "./Pagination";
 
-const src = 'http://localhost:3000/crm';
+
+const src = "http://localhost:3000/crm";
 
 export const Table = () => {
-  
   const [articles, setArticles] = useState([]);
+  const [countries, setcountries] = useState(false);
+  const [correntPage, setCurrentPage] = useState(1);
+  const [countePage] = useState(10);
 
   useEffect(() => {
-    axios.get(src).then(value => {
+    axios.get(src).then((value) => {
       setArticles(value.data);
     });
   });
+
+  const lastContryPAge = correntPage * countePage;
+  const firstCont = lastPage - countePage;
+  const correntCont = articles.slice(firstCont, lastContryPAge)
 
   return (
     <div>
@@ -32,7 +40,7 @@ export const Table = () => {
                       Электронная почта
                     </th>
                     <th scope="col" class="px-6 py-4">
-                      Телефон
+                      Адрес проживание
                     </th>
                     <th scope="col" class="px-6 py-4">
                       Возраст
@@ -40,20 +48,29 @@ export const Table = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {articles.map((value) => {
-                    return (
-                      <tr class="border-b dark:border-neutral-500">
-                        <td class="whitespace-nowrap px-6 py-4 font-medium">
-                        {value.name}
-                        </td>
-                        <td class="whitespace-nowrap px-6 py-4">{value.company}</td>
-                        <td class="whitespace-nowrap px-6 py-4">{value.email}</td>
-                        <td class="whitespace-nowrap px-6 py-4">{value.phone}</td>
-                        <td class="whitespace-nowrap px-6 py-4">{value.age}</td>
-                      </tr>
-                    );
-                  })}
+                    {articles.map((value) => {
+                      return (
+                        <tr class="border-b dark:border-neutral-500">
+                          <td class="whitespace-nowrap px-6 py-4 font-medium">
+                            {value.name}
+                          </td>
+                          <td class="whitespace-nowrap px-6 py-4">
+                            {value.company}
+                          </td>
+                          <td class="whitespace-nowrap px-6 py-4">
+                            {value.email}
+                          </td>
+                          <td class="whitespace-nowrap px-6 py-4">
+                            {value.address}
+                          </td>
+                          <td class="whitespace-nowrap px-6 py-4">
+                            {value.age}
+                          </td>
+                        </tr>
+                      );
+                    })}
                 </tbody>
+                <Pagination totalP ={articles.length} countePage ={countePage}/>
               </table>
             </div>
           </div>
