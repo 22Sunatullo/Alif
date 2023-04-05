@@ -30,7 +30,7 @@ export const InputComp = () => {
 
   return (
     <div>
-      <form onSubmit={(e)=> submit(e)}>
+      <form className="container ml-40" onSubmit={(e)=> submit(e)}>
         <input
           onChange={(e)=> inputSend(e)}
           type="name"
@@ -69,7 +69,7 @@ export const InputComp = () => {
         />
         <input
           onChange={(e)=> inputSend(e)}
-          type="age"
+          type="number"
           id="age"
           value={data.age}
           class="bg-gray-50 border mt-4 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-50% p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -77,7 +77,7 @@ export const InputComp = () => {
           required
         />
         
-        <button>Send</button>
+        <button className= " ml-10 mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Send</button>
       </form>
     </div>
   );

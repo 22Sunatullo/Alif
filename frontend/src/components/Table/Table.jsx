@@ -1,25 +1,32 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Pagination } from "./Pagination";
-
+import { TbodyIn } from "./TbodyIn";
 
 const src = "http://localhost:3000/crm";
 
 export const Table = () => {
   const [articles, setArticles] = useState([]);
-  const [countries, setcountries] = useState(false);
-  const [correntPage, setCurrentPage] = useState(1);
-  const [countePage] = useState(10);
+  const [loading, setLoadind] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [firstPage] = useState(20);
 
   useEffect(() => {
-    axios.get(src).then((value) => {
-      setArticles(value.data);
-    });
-  });
+    const getData = async () => {
+      setLoadind(true);
+      const res = axios.get(src).then((value) => {
+        setArticles(value.data);
+        setLoadind(false);
+      });
+    };
+    getData();
+  }, []);
 
-  const lastContryPAge = correntPage * countePage;
-  const firstCont = lastPage - countePage;
-  const correntCont = articles.slice(firstCont, lastContryPAge)
+  const lastArticlesIndex =currentPage * firstPage;
+  const firstArticlesIndex = lastArticlesIndex - firstPage;
+  const correntArticles = articles.slice(firstArticlesIndex, lastArticlesIndex);
+
+  const paginate = pageNumber => setCurrentPage(pageNumber);
 
   return (
     <div>
@@ -47,30 +54,8 @@ export const Table = () => {
                     </th>
                   </tr>
                 </thead>
-                <tbody>
-                    {articles.map((value) => {
-                      return (
-                        <tr class="border-b dark:border-neutral-500">
-                          <td class="whitespace-nowrap px-6 py-4 font-medium">
-                            {value.name}
-                          </td>
-                          <td class="whitespace-nowrap px-6 py-4">
-                            {value.company}
-                          </td>
-                          <td class="whitespace-nowrap px-6 py-4">
-                            {value.email}
-                          </td>
-                          <td class="whitespace-nowrap px-6 py-4">
-                            {value.address}
-                          </td>
-                          <td class="whitespace-nowrap px-6 py-4">
-                            {value.age}
-                          </td>
-                        </tr>
-                      );
-                    })}
-                </tbody>
-                <Pagination totalP ={articles.length} countePage ={countePage}/>
+               <TbodyIn articles={correntArticles} loading={loading} />
+               <Pagination firstPage ={firstPage} totalP={articles.length} paginate = {paginate}/>
               </table>
             </div>
           </div>
